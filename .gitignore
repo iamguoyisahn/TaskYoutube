@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual envs
+.env
+.venv
+venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Mac
+.DS_Store
+
+# Logs
+*.log
+
+# Pyright / VSCode
+.vscode/
+
+# Data
+data/
+
+# Credentials
+*.key
+*.pem
+.env
