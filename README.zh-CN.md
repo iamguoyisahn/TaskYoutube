@@ -8,7 +8,11 @@ DeepYoutubeRAG 是一个轻量级的 YouTube 视频问答（RAG）工具。它�
 - 快速为单个或批量 YouTube 视频构建可搜索的知识库
 - 在命令行环境中进行交互式问答或作为后端数据准备管道
 
-![Demo Screenshot](./images/Demo.png)
+<p align="center">
+  <img src="./images/Demo.png" alt="Demo Screenshot" width="720" />
+  <br/>
+  <em>演示：交互式问答界面</em>
+</p>
 ## 主要功能
 
 - 🎥 自动提取 YouTube 视频字幕（优先）
@@ -48,7 +52,7 @@ export OPENAI_API_KEY="your-openai-api-key"
 5. 运行一次示例：
 
 ```bash
-python3.12 youtube_rag.py "https://www.youtube.com/watch?v=VIDEO_ID"
+python3.12 youtube_rag/youtube_rag.py "https://www.youtube.com/watch?v=VIDEO_ID"
 ```
 
 替换 `VIDEO_ID` 为实际的视频 ID。例如：`dQw4w9WgXcQ`。
@@ -57,10 +61,10 @@ python3.12 youtube_rag.py "https://www.youtube.com/watch?v=VIDEO_ID"
 
 ```bash
 # 基本使用
-python3.12 youtube_rag.py "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+python3.12 youtube_rag/youtube_rag.py "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 
 # 自定义分块大小和重叠
-python3.12 youtube_rag.py "https://www.youtube.com/watch?v=dQw4w9WgXcQ" --chunk-size 1500 --chunk-overlap 50
+python3.12 youtube_rag/youtube_rag.py "https://www.youtube.com/watch?v=dQw4w9WgXcQ" --chunk-size 1500 --chunk-overlap 50
 ```
 
 ## 工作流程（内部步骤）

@@ -6,6 +6,11 @@ _Languages: English · [中文](./README.zh-CN.md)_
 
 A lightweight YouTube video Q&A tool that supports automatic subtitle extraction or audio transcription to build a searchable knowledge base.
 
+<p align="center">
+	<img src="./images/Demo.png" alt="Demo Screenshot" width="720" />
+	<br/>
+	<em>Demo: interactive Q&amp;A session</em>
+</p>
 ## Table of Contents
 
 - [Quick Start](#quick-start)
@@ -44,6 +49,7 @@ python3.12 youtube_rag/youtube_rag.py "https://www.youtube.com/watch?v=VIDEO_ID"
 
 ## Usage Examples
 
+
 ```bash
 # Basic usage
 python3.12 youtube_rag/youtube_rag.py "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
@@ -62,6 +68,8 @@ Note: When running the tool, it may prompt you to confirm audio transcription (i
 4. **Vectorization**: Creates vector database using OpenAI embeddings
 5. **Q&A**: Answers user questions based on Retrieval Augmented Generation (RAG)
 
+
+
 ## Requirements
 
 - Python 3.12
@@ -73,17 +81,17 @@ Note: When running the tool, it may prompt you to confirm audio transcription (i
 ## Command Line Options
 
 ```bash
-python3.12 youtube_rag.py [-h] [--chunk-size CHUNK_SIZE] [--chunk-overlap CHUNK_OVERLAP] url
+python3.12 youtube_rag/youtube_rag.py [-h] [--chunk-size CHUNK_SIZE] [--chunk-overlap CHUNK_OVERLAP] url
 
 positional arguments:
-	url                   YouTube video URL
+  url                   YouTube video URL
 
 optional arguments:
-	-h, --help            show this help message and exit
-	--chunk-size CHUNK_SIZE
-												Text chunk size (default: 1000)
-	--chunk-overlap CHUNK_OVERLAP
-												Text chunk overlap (default: 20)
+  -h, --help            show this help message and exit
+  --chunk-size CHUNK_SIZE
+                        Text chunk size (default: 1000)
+  --chunk-overlap CHUNK_OVERLAP
+                        Text chunk overlap (default: 20)
 ```
 
 ## Environment Variables
