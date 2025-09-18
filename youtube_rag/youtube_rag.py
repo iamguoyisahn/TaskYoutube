@@ -53,7 +53,24 @@ class YouTubeRAG:
             return Document(page_content=content, metadata={"source": url, "type": "subtitles"})
         
         # Fallback: audio transcription / 备选：音频转录
-        print("⚠️ No subtitles found, starting audio transcription... / 未找到字幕，开始音频转录...")
+        print("⚠️ No subtitles found / 未找到字幕")
+        
+        # Ask user if they want to transcribe audio / 询问用户是否要转录音频
+        while True:
+            try:
+                choice = input("🎙️ Do you want to transcribe audio? This may take time and costs OpenAI credits. (Y/N) / 是否转录音频？这可能需要时间并消耗OpenAI积分。(Y/N): ").strip().upper()
+                if choice in ['Y', 'YES', '是', 'Y']:
+                    break
+                elif choice in ['N', 'NO', '否', 'N']:
+                    print("❌ Audio transcription cancelled / 音频转录已取消")
+                    sys.exit(0)
+                else:
+                    print("Please enter Y/N / 请输入Y/N")
+            except KeyboardInterrupt:
+                print("\n❌ Operation cancelled / 操作已取消")
+                sys.exit(0)
+        
+        print("🎙️ Starting audio transcription... / 开始音频转录...")
         content = self._transcribe_audio(url)
         print("✅ Using audio transcription / 使用音频转录")
         return Document(page_content=content, metadata={"source": url, "type": "transcription"})
@@ -61,29 +78,43 @@ class YouTubeRAG:
     def _get_subtitles(self, url):
         """Get YouTube subtitles / 获取YouTube字幕"""
         try:
-            with tempfile.TemporaryDirectory() as tmpdir:
-                subtitle_path = Path(tmpdir) / "subtitle.%(ext)s"
-                
-                cmd = [
-                    "python3.12", "-m", "yt_dlp",
-                    "--write-subs", "--write-auto-subs",
-                    "--sub-langs", "zh,zh-CN,en",
-                    "--skip-download",
-                    "-o", str(subtitle_path),
-                    url
-                ]
-                
-                subprocess.run(cmd, capture_output=True, text=True, check=True)
-                
-                # Find subtitle files / 查找字幕文件
-                for file in Path(tmpdir).glob("*.{vtt,srt}"):
-                    return file.read_text(encoding='utf-8')
-                    
-        except subprocess.CalledProcessError:
-            pass
+            tmpdir = tempfile.mkdtemp()
+            subtitle_path = os.path.join(tmpdir, "subtitle.%(ext)s")
+            
+            # Try to download subtitles / 尝试下载字幕
+            cmd = [
+                "python3.12", "-m", "yt_dlp",
+                "--write-subs", "--write-auto-subs",
+                "--sub-langs", "zh,zh-CN,zh-TW,en,ja,ko,es,fr,de,pt,ru,ar,hi,it,nl,sv,no,da,fi,pl,tr,th,vi",
+                "--skip-download",
+                "-o", subtitle_path,
+                url
+            ]
+            
+            subprocess.run(cmd, capture_output=True, text=True)
+            
+            # Find downloaded subtitle files / 查找下载的字幕文件
+            files = os.listdir(tmpdir)
+            print(f"📁 Files in temp directory / 临时目录中的文件: {files}")
+            
+            for file in files:
+                if file.endswith(('.vtt', '.srt')):
+                    subtitle_file = os.path.join(tmpdir, file)
+                    print(f"📄 Found subtitle file / 找到字幕文件: {file}")
+                    with open(subtitle_file, 'r', encoding='utf-8') as f:
+                        content = f.read()
+                    # Clean up temp files / 清理临时文件
+                    os.remove(subtitle_file)
+                    os.rmdir(tmpdir)
+                    return content
+            
+            # Clean up temp directory / 清理临时目录
+            os.rmdir(tmpdir)
+            return None
+            
         except Exception as e:
             print(f"Subtitle extraction failed / 字幕获取失败: {e}")
-        return None
+            return None
     
     def _transcribe_audio(self, url):
         """Download audio and transcribe / 下载音频并转录"""
@@ -106,8 +137,50 @@ class YouTubeRAG:
             
             return transcript.text
     
+    def _ask_save_original_text(self, document):
+        """Ask user if they want to save original text to file / 询问用户是否保存原始文本到文件"""
+        content_type = document.metadata.get("type", "content")
+        source_url = document.metadata.get("source", "unknown")
+        
+        # Extract video ID from URL for filename / 从URL提取视频ID作为文件名
+        video_id = "unknown"
+        if "youtube.com/watch?v=" in source_url:
+            video_id = source_url.split("v=")[1].split("&")[0]
+        elif "youtu.be/" in source_url:
+            video_id = source_url.split("youtu.be/")[1].split("?")[0]
+        
+        print(f"\n💾 Do you want to save the original {content_type} to a .txt file? / 是否将原始{content_type}保存为.txt文件？")
+        
+        while True:
+            try:
+                choice = input("Save to file? (Y/N) / 保存到文件？(Y/N): ").strip().upper()
+                if choice in ['Y', 'YES', '是']:
+                    filename = f"{video_id}_{content_type}.txt"
+                    try:
+                        with open(filename, 'w', encoding='utf-8') as f:
+                            f.write(f"Source: {source_url}\n")
+                            f.write(f"Type: {content_type}\n")
+                            f.write("=" * 50 + "\n\n")
+                            f.write(document.page_content)
+                        print(f"✅ Saved to {filename} / 已保存到 {filename}")
+                    except Exception as e:
+                        print(f"❌ Failed to save file / 保存文件失败: {e}")
+                    break
+                elif choice in ['N', 'NO', '否']:
+                    print("⏭️ Skipping file save / 跳过文件保存")
+                    break
+                else:
+                    print("Please enter Y/N / 请输入Y/N")
+            except KeyboardInterrupt:
+                print("\n⏭️ Skipping file save / 跳过文件保存")
+                break
+    
     def build_knowledge_base(self, documents):
         """Build vector knowledge base / 构建向量知识库"""
+        
+        # Ask user if they want to save the original text / 询问用户是否保存原始文本
+        self._ask_save_original_text(documents[0])
+        
         print("🔧 Building knowledge base... / 构建知识库...")
         
         # Text splitting / 文本分割
