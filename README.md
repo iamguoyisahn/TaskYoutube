@@ -6,6 +6,14 @@ _Languages: English · [中文](./README.zh-CN.md)_
 
 A lightweight YouTube video Q&A tool that supports automatic subtitle extraction or audio transcription to build a searchable knowledge base.
 
+## Table of Contents
+
+- [Quick Start](#quick-start)
+- [Usage Examples](#usage-examples)
+- [How It Works](#how-it-works)
+- [Environment Variables](#environment-variables)
+- [License](#license)
+
 ## Features
 
 - 🎥 Automatic YouTube video subtitle extraction
@@ -31,18 +39,20 @@ export OPENAI_API_KEY="your-openai-api-key"
 ### 3. Run the Tool
 
 ```bash
-python3.12 youtube_rag.py "https://www.youtube.com/watch?v=VIDEO_ID"
+python3.12 youtube_rag/youtube_rag.py "https://www.youtube.com/watch?v=VIDEO_ID"
 ```
 
 ## Usage Examples
 
 ```bash
 # Basic usage
-python3.12 youtube_rag.py "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+python3.12 youtube_rag/youtube_rag.py "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 
 # Custom chunk size
-python3.12 youtube_rag.py "https://www.youtube.com/watch?v=dQw4w9WgXcQ" --chunk-size 1500 --chunk-overlap 50
+python3.12 youtube_rag/youtube_rag.py "https://www.youtube.com/watch?v=dQw4w9WgXcQ" --chunk-size 1500 --chunk-overlap 50
 ```
+
+Note: When running the tool, it may prompt you to confirm audio transcription (if subtitles are unavailable) and whether to save the original extracted/transcribed text to a `.txt` file. Follow the prompts in the terminal.
 
 ## How It Works
 
@@ -84,22 +94,3 @@ optional arguments:
 
 This project is licensed under the [MIT License](./LICENSE).
 
-## 工作原理
-
-1. **内容获取**: 优先尝试获取YouTube自动生成的字幕
-2. **备选方案**: 如无字幕，则下载音频并使用Whisper转录
-3. **文本处理**: 将内容分割成适合的文本块
-4. **向量化**: 使用OpenAI embeddings创建向量数据库
-5. **问答**: 基于检索增强生成(RAG)回答用户问题
-
-## 依赖项
-
-- Python 3.12
-- OpenAI API密钥
-- yt-dlp (YouTube视频下载)
-- LangChain (RAG框架)
-- ChromaDB (向量数据库)
-
-## 许可证
-
-MIT License
