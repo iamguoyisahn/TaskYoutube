@@ -8,6 +8,7 @@ DeepYoutubeRAG 是一个轻量级的 YouTube 视频问答（RAG）工具。它�
 - 快速为单个或批量 YouTube 视频构建可搜索的知识库
 - 在命令行环境中进行交互式问答或作为后端数据准备管道
 
+![Demo Screenshot](./images/Demo.png)
 ## 主要功能
 
 - 🎥 自动提取 YouTube 视频字幕（优先）
