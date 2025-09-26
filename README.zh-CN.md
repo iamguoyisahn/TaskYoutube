@@ -1,4 +1,4 @@
-# YoutubeRAG Q&A（中文）[上线](https://huggingface.co/spaces/doreamong/YoutubeRAG?logs=container)
+# YoutubeRAG Q&A（中文）[上线](https://be43e8d8be1aafdd7e.gradio.live)
 
 _语言： [English](./README.md) · **中文**_
 
