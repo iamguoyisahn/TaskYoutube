@@ -1,4 +1,4 @@
-# YouTube RAG Q&A Tool Now ([Published Here](https://2792e7450d4da87793.gradio.live/))
+# YouTube RAG Q&A Tool Now [Published Here](https://huggingface.co/spaces/doreamong/YoutubeRAG?logs=container)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
