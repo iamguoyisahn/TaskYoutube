@@ -1,4 +1,4 @@
-# YouTube RAG Q&A Tool Now [Published Here](https://be43e8d8be1aafdd7e.gradio.live)
+# YouTube RAG Q&A Tool Now [Published Here](https://04f8fc1ccce8506c61.gradio.live)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
