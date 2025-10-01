@@ -33,7 +33,7 @@ cd TaskYoutube
 2. 创建并激活虚拟环境（可选但推荐）：
 
 ```bash
-python3.12 -m venv .venv
+python -m venv .venv
 source .venv/bin/activate
 ```
 
@@ -52,7 +52,7 @@ export OPENAI_API_KEY="your-openai-api-key"
 5. 运行一次示例：
 
 ```bash
-python3.12 youtube_rag/youtube_rag.py "https://www.youtube.com/watch?v=VIDEO_ID"
+python main.py --url "https://www.youtube.com/watch?v=VIDEO_ID"
 ```
 
 替换 `VIDEO_ID` 为实际的视频 ID。例如：`dQw4w9WgXcQ`。
@@ -60,11 +60,27 @@ python3.12 youtube_rag/youtube_rag.py "https://www.youtube.com/watch?v=VIDEO_ID"
 ## 使用示例（常见选项）
 
 ```bash
-# 基本使用
-python3.12 youtube_rag/youtube_rag.py "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+# 启动Web界面（推荐）
+python main.py
+
+# 命令行模式分析视频
+python main.py --url "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+
+# 禁用 Whisper 转录（仅依赖字幕）
+python main.py --url "https://www.youtube.com/watch?v=dQw4w9WgXcQ" --no-transcription
 
 # 自定义分块大小和重叠
-python3.12 youtube_rag/youtube_rag.py "https://www.youtube.com/watch?v=dQw4w9WgXcQ" --chunk-size 1500 --chunk-overlap 50
+python main.py --url "https://www.youtube.com/watch?v=dQw4w9WgXcQ" --chunk-size 1500 --chunk-overlap 50
+
+# 查看保存的会话
+python main.py --list-sessions
+
+# 生成指定会话的详细分析报告
+python main.py --export-analysis "session_name" --analysis-language zh
+
+# 将整个 YouTube 播放列表批量导入到单个会话
+python scripts/playlist_ingest.py "https://www.youtube.com/playlist?list=PLAYLIST_ID" \
+  --session-name buffet_all --skip-existing --save-summary
 ```
 
 ## 工作流程（内部步骤）
@@ -86,7 +102,7 @@ python3.12 youtube_rag/youtube_rag.py "https://www.youtube.com/watch?v=dQw4w9WgX
 ## 命令行参数
 
 ```text
-python3.12 youtube_rag.py [-h] [--chunk-size CHUNK_SIZE] [--chunk-overlap CHUNK_OVERLAP] url
+python main.py [-h] [--ui] [--url URL] [--model MODEL] [--chunk-size CHUNK_SIZE] [--chunk-overlap CHUNK_OVERLAP] [--list-sessions] [--load-session SESSION] [--delete-session SESSION]
 
 positional arguments:
   url                   YouTube video URL

@@ -3,4 +3,6 @@ langchain>=0.1.0
 langchain-openai>=0.1.0
 langchain-community>=0.1.0
 chromadb>=1.0.0
-yt-dlp>=2023.1.0
+yt-dlp[default]>=2023.1.0
+gradio>=4.0.0
+python-dotenv>=1.0.0

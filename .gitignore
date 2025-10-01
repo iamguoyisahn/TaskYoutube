@@ -28,3 +28,7 @@ data/
 *.key
 *.pem
 .env
+# RAG session artifacts
+rag_sessions/
+*_summary.*
+*_title.*
