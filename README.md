@@ -6,8 +6,6 @@ sdk_version: 5.46.0
 ---
 # YouTube RAG System
 
-> Live demo: [https://04f8fc1ccce8506c61.gradio.live](https://04f8fc1ccce8506c61.gradio.live)
-
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE) [![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://python.org)
 
 _Languages: English · [中文](./README.zh-CN.md)_
